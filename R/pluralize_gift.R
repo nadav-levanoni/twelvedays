@@ -18,14 +18,12 @@ pluralize_gift <- function(gift){
 
   # modify special exception 6
   excep_6 = str_detect(gift, "oose$")
-  gift = gift %>%
-    str_replace("oose$", "eese")
+  gift[!modified] <- str_replace(gift[!modified], "oose$", "eese")
   modified = modified + excep_6
 
   # modify exception 9
   excep_9 = str_detect(gift, "y$")
-  gift = gift %>%
-    str_replace("y$", "ies")
+  gift[!modified] <- str_replace(gift[!modified], "y$", "ies")
   modified = modified + excep_9
 
   # everything else
