@@ -1,2 +1,2 @@
 # twelvedays
-For lab 6. STAT 331
+ Package for singing the 12 days of Christmas song
