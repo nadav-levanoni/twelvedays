@@ -1,7 +1,6 @@
 #' Takes a noun and makes it plural
 #'
 #' @param num An integer
-#' @param num_word A string corresponding to the integer
 #' @param item A string
 #' @param verb A string
 #' @param adjective A string
