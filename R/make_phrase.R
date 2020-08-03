@@ -20,7 +20,7 @@ make_phrase <- function(num, item, verb, adjective, location){
 
   num <-  num_to_word(as.integer(num))
 
-  phrase <-  paste(num, item, verb, adjective, location)
+  phrase <-  paste(num, adjective, item, verb, location)
 
   phrase <-  str_trim(str_replace_all(phrase, " +", " "))
 
