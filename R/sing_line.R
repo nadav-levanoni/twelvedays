@@ -27,7 +27,7 @@ sing_line <- function(dataset, line, phrase_col){
 
   song <- str_c(c(head, body), collapse = ",\n")
 
-  song <- str_replace(song, ",\n\\.", ".")
+  song <- str_replace(song, ",\n\\.", "\n.")
   song <- str_replace(song, ",,", ",")
 
   return(song)
