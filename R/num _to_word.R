@@ -12,6 +12,6 @@
 #' @export
 
 num_to_word <- function(num){
-  nums <-  c("and", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve")
+  nums <-  c("and a", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve")
   return(nums[num])
 }
