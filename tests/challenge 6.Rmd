@@ -1,0 +1,142 @@
+---
+title: "challenge 6"
+author: "Nadav Levanoni"
+date: "8/2/2020"
+output:
+  rmdformats::readthedown:
+    lightbox: true
+    gallery: true
+  
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+getting the proper libraries (including testthat)
+
+repository link: https://github.com/nadav-levanoni/twelvedays
+
+```{r, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(twelvedays)
+library(testthat)
+```
+
+# Setting up test case dataset
+
+```{r}
+Day = 1:12
+Day.in.Words = c("first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth", "ninth","tenth",  "eleventh", "twelfth")
+Gift.Item = c("pony", "blue berry", "apple", "pencil", "daisy", "shoe", "keyboard", "charger", "monitor", "table", "earbud", "calculator")
+Verb = c("jumping", NA, NA, "writing", "blooming", NA, "typing", "charging", NA, NA, NA, "calculating")
+Adjective = c(NA, "fresh", "ripe", NA, "colorful", "worn out", "mechanical", "red", "large", NA, "Bose", "TI-84 plus CE")
+Location = c(NA, "from my backyard", "from the tallest tree", "from the lost and found", NA, NA, NA, "from the store", NA, NA, NA, NA)
+
+xmas3 <-  data.frame(Day, Day.in.Words, Gift.Item, Verb, Adjective, Location)
+```
+
+
+# Test One: Plurals
+
+
+```{r}
+test_that("Items are pluralized", {
+
+  pluralize_gifts <- c("pony", "blue berries", "apples", "pencils", "daisies", "shoes", "keyboards", "chargers", "monitors", "tables", "earbuds", "calculators")
+  
+  xmas3 <- xmas3%>%
+    mutate(Gift.Item = pluralize_gift(xmas3$Gift.Item))
+  
+  expect_equal(xmas3$Gift.Item, pluralize_gifts)
+
+  })
+
+```
+
+
+# Test Two: Creating sentences
+
+Okay, I found an error in my code and fixed it. Pony was being turned into Ponies.<br>
+I fixed it on github (I already submitted my lab, but this didnt come up as an issue for it). FYI its 11:16 pm, I didnt change it after the deadline.
+
+
+```{r}
+#pluralizing the dataset
+xmas3 <- xmas3%>%
+  mutate_all(~replace(., is.na(.), ""))
+
+xmas3 <- xmas3%>%
+    mutate(Gift.Item = pluralize_gift(xmas3$Gift.Item))
+
+test_that("Sentences are properly formed", {
+
+  correct_sentences <- c("And a Pony Jumping", "Two Fresh Blue Berries from My Backyard", "Three Ripe Apples from the Tallest Tree", "Four Pencils Writing from the Lost and Found", "Five Colorful Daisies Blooming", "Six Worn Out Shoes", "Seven Mechanical Keyboards Typing", "Eight Red Chargers Charging from the Store", "Nine Large Monitors", "Ten Tables", "Eleven Bose Earbuds", "Twelve TI 84 Plus CE Calculators Calculating")
+  
+  xmas3 <- xmas3 %>%
+    mutate(
+      Full.Phrase = pmap_chr(xmas3, ~make_phrase(..1, ..3, ..4, ..5, ..6))
+    )
+  
+  expect_equal(xmas3$Full.Phrase, correct_sentences)
+
+  })
+
+```
+
+
+# Test Three: Iteration.
+
+
+
+
+
+```{r}
+#creating the sentences
+xmas3 <- xmas3 %>%
+    mutate(
+      Full.Phrase = pmap_chr(xmas3, ~make_phrase(..1, ..3, ..4, ..5, ..6))
+    )
+
+test_that("Daily Songs are properly formed", {
+
+  test_1a = "On the twelfth day of Christmas, my true love sent to me,
+Twelve TI 84 Plus CE Calculators Calculating,
+Eleven Bose Earbuds,\nTen Tables,
+Nine Large Monitors,\nEight Red Chargers Charging from the Store,
+Seven Mechanical Keyboards Typing,
+Six Worn Out Shoes,
+Five Colorful Daisies Blooming,
+Four Pencils Writing from the Lost and Found,
+Three Ripe Apples from the Tallest Tree,
+Two Fresh Blue Berries from My Backyard,
+And a Pony Jumping.\n"
+
+  
+  test_1 =  sing_line(xmas3, 12, Full.Phrase)
+  
+  expect_equal(test_1, test_1a)
+  
+  
+  
+  test_2a = "On the second day of Christmas, my true love sent to me,
+Two Fresh Blue Berries from My Backyard,
+And a Pony Jumping.\n"
+
+  test_2 =  sing_line(xmas3, 2, Full.Phrase)
+  
+  expect_equal(test_2, test_2a)
+  
+
+  })
+```
+
+
+
+
+
+
+
+
+
+
